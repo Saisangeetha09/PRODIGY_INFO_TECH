@@ -1,0 +1,48 @@
+import re
+def check_password_strength(password):
+    # Criteria patterns
+    length_criteria = r'.{8,}'
+    uppercase_criteria = r'[A-Z]'
+    lowercase_criteria = r'[a-z]'
+    number_criteria = r'[0-9]'
+    special_criteria = r'[!@#$%^&*(),.?":{}|<>]'
+    # Checking each criteria
+    length = bool(re.search(length_criteria, password))
+    uppercase = bool(re.search(uppercase_criteria, password))
+    lowercase = bool(re.search(lowercase_criteria, password))
+    number = bool(re.search(number_criteria, password))
+    special = bool(re.search(special_criteria, password))
+    # Determine strength
+    criteria_met = sum([length, uppercase, lowercase, number, special])
+    # Strength feedback
+    if criteria_met == 5:
+        strength = "Very Strong"
+    elif criteria_met == 4:
+        strength = "Strong"
+    elif criteria_met == 3:
+        strength = "Moderate"
+    elif criteria_met == 2:
+        strength = "Weak"
+    else:
+        strength = "Very Weak"
+    # Feedback message
+    feedback = {
+        "Length": length,
+        "Uppercase": uppercase,
+        "Lowercase": lowercase,
+        "Number": number,
+        "Special Character": special,
+        "Strength": strength
+    }
+
+    return feedback
+
+# Example usage
+password = input("Enter a password to check its strength: ")
+result = check_password_strength(password)
+
+print("\nPassword Strength Report:")
+for criteria, met in result.items():
+    if criteria != "Strength":
+        print(f"{criteria}: {'✔' if met else '✖'}")
+print(f"Overall Strength: {result['Strength']}")
